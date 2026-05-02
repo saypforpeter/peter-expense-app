@@ -89,9 +89,8 @@
 
 <script>
 const STORED_KEY = 'expense_auth';
-const CORRECT_PASSWORD = '1128'; // Peter 可以自己改呢個
+const CORRECT_PASSWORD = '1128';
 
-// If already logged in, go directly to app
 if (localStorage.getItem(STORED_KEY) === CORRECT_PASSWORD) {
   window.location.href = 'app.html';
 }
@@ -113,7 +112,6 @@ function tryLogin() {
   }
 }
 
-// Auto-focus on load
 document.getElementById('passwordInput').focus();
 </script>
 

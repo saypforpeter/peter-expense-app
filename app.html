@@ -37,7 +37,7 @@
     .budget-bar-fill.warning { background: var(--warning); }
     .budget-bar-fill.danger { background: var(--danger); }
 
-    /* Month nav — with year/month pickers */
+    /* Month nav */
     .month-nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card); border-bottom: 1px solid var(--border); }
     .month-nav-left { display: flex; align-items: center; gap: 8px; }
     .month-nav button { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 8px; font-size: 16px; cursor: pointer; }
@@ -45,9 +45,9 @@
     .month-nav select option { background: var(--card); color: var(--text); }
     .current-month { font-size: 16px; font-weight: 600; min-width: 80px; text-align: center; }
 
-    /* Tabs — REMOVED ADD TAB */
+    /* Tabs — added 月曆 tab */
     .tabs { display: flex; background: var(--card); border-bottom: 1px solid var(--border); overflow-x: auto; }
-    .tab { flex: 1; min-width: 80px; padding: 12px 8px; text-align: center; font-size: 12px; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
+    .tab { flex: 1; min-width: 70px; padding: 12px 6px; text-align: center; font-size: 11px; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.2s; white-space: nowrap; }
     .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
     .tab-icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
@@ -83,16 +83,35 @@
     .chart-container { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
     .chart-title { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: var(--text2); }
     .chart-canvas { max-height: 250px; }
+    .chart-legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .legend-item { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--text2); }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* Calendar */
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .calendar-nav { display: flex; align-items: center; gap: 8px; }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; background: var(--card); border-radius: 12px; padding: 12px; border: 1px solid var(--border); }
+    .calendar-weekday { text-align: center; font-size: 11px; color: var(--text2); padding: 4px; font-weight: 600; }
+    .calendar-day { aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; font-size: 13px; position: relative; transition: background 0.2s; min-height: 38px; }
+    .calendar-day:hover { background: var(--card2); }
+    .calendar-day.other-month { color: #444; }
+    .calendar-day.today { border: 1px solid var(--accent); }
+    .calendar-day.has-expense::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--expense); position: absolute; bottom: 3px; }
+    .calendar-day.has-income::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--income); position: absolute; bottom: 3px; }
+    .calendar-day.has-both::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--expense); position: absolute; bottom: 3px; left: 30%; }
+    .calendar-day.has-both::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--income); position: absolute; bottom: 3px; right: 30%; }
+    .calendar-summary { margin-top: 12px; font-size: 13px; color: var(--text2); text-align: center; }
 
     /* Category breakdown */
-    .cat-list { }
-    .cat-item { display: flex; align-items: center; padding: 10px; background: var(--card); border-radius: 10px; margin-bottom: 6px; border: 1px solid var(--border); }
+    .cat-item { display: flex; align-items: center; padding: 10px; background: var(--card); border-radius: 10px; margin-bottom: 6px; border: 1px solid var(--border); cursor: pointer; transition: background 0.2s; }
+    .cat-item:active { background: var(--card2); }
     .cat-emoji { font-size: 20px; width: 36px; flex-shrink: 0; }
     .cat-info { flex: 1; }
     .cat-name { font-size: 13px; font-weight: 500; }
-    .cat-amount { font-size: 14px; font-weight: 600; color: var(--expense); }
+    .cat-amount { font-size: 14px; font-weight: 600; color: var(--expense); margin-right: 8px; }
     .cat-bar { height: 4px; background: var(--card2); border-radius: 2px; margin-top: 4px; overflow: hidden; }
     .cat-bar-fill { height: 100%; border-radius: 2px; }
+    .cat-arrow { color: var(--text2); font-size: 14px; }
 
     /* Modal */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 200; display: none; align-items: center; justify-content: center; padding: 16px; }
@@ -165,6 +184,17 @@
     /* Logout btn */
     .logout-btn { display: inline-block; padding: 6px 14px; background: var(--card2); border: 1px solid var(--border); color: var(--text2); border-radius: 8px; font-size: 12px; cursor: pointer; }
     .logout-btn:active { background: var(--danger); border-color: var(--danger); color: white; }
+
+    /* Calendar day detail */
+    .cal-day-tx { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border); }
+    .cal-day-tx:last-child { border-bottom: none; }
+    .cal-day-tx .tx-emoji { font-size: 20px; width: 32px; }
+    .cal-day-tx .tx-amount { font-size: 14px; }
+    .cal-day-tx .tx-merchant { font-size: 13px; }
+    .cal-day-tx .tx-category { font-size: 11px; }
+    .cal-day-total { display: flex; justify-content: space-between; padding: 10px 0; border-top: 1px solid var(--border); margin-top: 4px; font-weight: 600; }
+    .cal-day-total.expense { color: var(--expense); }
+    .cal-day-total.income { color: var(--income); }
   </style>
 </head>
 <body>
@@ -192,7 +222,7 @@
   </div>
 </div>
 
-<!-- Month Nav — NEW: Year + Month dropdowns -->
+<!-- Month Nav -->
 <div class="month-nav">
   <div class="month-nav-left">
     <select id="yearPicker" onchange="onMonthChange()"></select>
@@ -204,10 +234,13 @@
   </div>
 </div>
 
-<!-- Tabs — REMOVED ADD TAB -->
+<!-- Tabs — added 月曆 -->
 <div class="tabs">
   <div class="tab active" onclick="switchTab('home')">
     <span class="tab-icon">📋</span>首頁
+  </div>
+  <div class="tab" onclick="switchTab('calendar')">
+    <span class="tab-icon">📅</span>月曆
   </div>
   <div class="tab" onclick="switchTab('charts')">
     <span class="tab-icon">📊</span>圖表
@@ -234,7 +267,7 @@
   </div>
   
   <div class="search-bar">
-    <input type="text" placeholder="搜索商戶、類別..." id="searchInput" oninput="filterTransactions()">
+    <input type="text" placeholder="搜索店舖、類別、備註..." id="searchInput" oninput="filterTransactions()">
   </div>
   
   <div class="filter-row" id="filterRow"></div>
@@ -242,6 +275,12 @@
   <div id="transactionList">
     <div class="loading"><div class="spinner"></div>載入中...</div>
   </div>
+</div>
+
+<!-- ===================== CALENDAR TAB ===================== -->
+<div class="content" id="tab-calendar">
+  <div class="calendar-grid" id="calendarGrid"></div>
+  <div class="calendar-summary" id="calendarSummary"></div>
 </div>
 
 <!-- ===================== CHARTS TAB ===================== -->
@@ -258,6 +297,9 @@
 
 <!-- ===================== CATEGORIES TAB ===================== -->
 <div class="content" id="tab-cats">
+  <div class="search-bar" style="margin-bottom:12px">
+    <input type="text" placeholder="搜尋類別..." id="catSearchInput" oninput="filterCategories()">
+  </div>
   <div id="categoryList"></div>
 </div>
 
@@ -333,12 +375,12 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label">商戶</label>
-          <input type="text" class="form-input" id="editTxMerchant">
+          <label class="form-label">商戶 / 店舖</label>
+          <input type="text" class="form-input" id="editTxMerchant" placeholder="惠康、麥當勞...">
         </div>
         <div class="form-group">
           <label class="form-label">備註</label>
-          <input type="text" class="form-input" id="editTxNote">
+          <input type="text" class="form-input" id="editTxNote" placeholder="可選">
         </div>
         <div style="display:flex;gap:8px;margin-top:16px">
           <button type="button" class="btn btn-danger" style="flex:1" onclick="deleteTransaction()">🗑️ 刪除</button>
@@ -346,6 +388,17 @@
         </div>
       </form>
     </div>
+  </div>
+</div>
+
+<!-- Calendar Day Detail Modal -->
+<div class="modal-overlay" id="calDayModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="calDayTitle">日交易</span>
+      <button class="modal-close" onclick="closeCalDayModal()">✕</button>
+    </div>
+    <div class="modal-body" id="calDayBody"></div>
   </div>
 </div>
 
@@ -357,10 +410,10 @@
 
 <script>
 // ============================================================
-// AUTH CHECK — redirect to login if not authenticated
+// AUTH CHECK
 // ============================================================
 const AUTH_KEY = 'expense_auth';
-const CORRECT_PASSWORD = '1128'; // Must match login.html
+const CORRECT_PASSWORD = '1128';
 
 if (localStorage.getItem(AUTH_KEY) !== CORRECT_PASSWORD) {
   window.location.href = 'login.html';
@@ -375,7 +428,7 @@ function logout() {
 // CONFIG
 // ============================================================
 const CONFIG = {
-    SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwhpwPmxBJTxLX5Jqx9JiNSEw5_DZ_l8VTyu8PfPYOwqex2vJLE24oQTWPCYJhuePOCTQ/exec',
+  SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwhpwPmxBJTxLX5Jqx9JiNSEw5_DZ_l8VTyu8PfPYOwqex2vJLE24oQTWPCYJhuePOCTQ/exec',
   MONTHLY_BUDGET: 15000,
   CATEGORIES: []
 };
@@ -388,23 +441,19 @@ let currentFilter = '全部';
 let charts = { pie: null, bar: null };
 
 // ============================================================
-// INIT — build year/month pickers
+// INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
   buildYearPicker();
   buildMonthPicker();
   
-  // Set to current month
   const now = new Date();
   document.getElementById('yearPicker').value = now.getFullYear();
   document.getElementById('monthPicker').value = now.getMonth();
   currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   
-  // Load from local cache first
   loadCache();
-  // Then fetch from server
   fetchData();
-  // Auto-refresh every 30 seconds
   setInterval(fetchData, 30000);
 });
 
@@ -486,6 +535,7 @@ function updateUI() {
   updateBudgetBar();
   renderFilterRow();
   filterTransactions();
+  renderCalendar();
   renderCategories();
   renderCharts();
   document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('zh-HK');
@@ -507,7 +557,6 @@ function updateBudgetBar() {
   document.getElementById('budgetText').textContent = `$${Math.abs(total).toLocaleString()} / $${budget.toLocaleString()}`;
   document.getElementById('monthExpense').textContent = `$${Math.abs(total).toLocaleString()}`;
   
-  // Also set income display
   const incomeTotal = monthTxs.filter(t => t.狀態 === 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
   document.getElementById('monthIncome').textContent = `$${incomeTotal.toLocaleString()}`;
 }
@@ -525,6 +574,10 @@ function setFilter(f) {
   currentFilter = f;
   filterTransactions();
   renderFilterRow();
+  // If not on home tab, switch to it
+  if (!document.getElementById('tab-home').classList.contains('active')) {
+    switchTab('home');
+  }
 }
 
 function filterTransactions() {
@@ -549,7 +602,7 @@ function renderTransactionList() {
   const el = document.getElementById('transactionList');
   
   if (filteredTransactions.length === 0) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">暂无记录<br><small>試試切換月份或聯絡我新增</small></div></div>';
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📭</div><div class="empty-text">暂无记录<br><small>試試切換月份或清除搜索</small></div></div>';
     return;
   }
   
@@ -563,22 +616,24 @@ function renderTransactionList() {
   let html = '';
   Object.keys(groups).sort((a, b) => b.localeCompare(a)).forEach(date => {
     const dayTxs = groups[date];
-    const dayTotal = dayTxs.reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
+    const dayExpense = dayTxs.filter(t => t.狀態 !== 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
+    const dayIncome = dayTxs.filter(t => t.狀態 === 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
     const dayDate = new Date(date + 'T00:00:00');
     
     html += `<div class="day-group">
       <div class="day-header">
         <span>${dateLabel(dayDate)}</span>
-        <span class="day-total">-$${dayTotal.toLocaleString()}</span>
+        <span class="day-total">${dayExpense > 0 ? '-' : ''}$${Math.abs(dayExpense).toLocaleString()}${dayIncome > 0 ? ' | +' + dayIncome.toLocaleString() : ''}</span>
       </div>`;
     
-    dayTxs.forEach((t, i) => {
+    dayTxs.forEach((t) => {
       const realIndex = allTransactions.indexOf(t);
       const isIncome = t.狀態 === 'income';
+      const merchant = t.商戶 || t.備註 || '未分類';
       html += `<div class="transaction" onclick="openEditModal(${realIndex})">
         <div class="tx-emoji">${t.類別 || '📋'}</div>
         <div class="tx-info">
-          <div class="tx-merchant">${esc(t.商戶 || t.備註 || '未分類')}</div>
+          <div class="tx-merchant">${esc(merchant)}</div>
           <div class="tx-category">${esc(t.備註 || '')}</div>
         </div>
         <div class="tx-amount ${isIncome ? 'income' : 'expense'}">
@@ -593,32 +648,151 @@ function renderTransactionList() {
   el.innerHTML = html;
 }
 
-function renderCategories() {
+// ============================================================
+// CALENDAR
+// ============================================================
+function renderCalendar() {
+  const monthStr = formatMonth(currentMonth);
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
+  
+  // Get days with transactions
+  const dayHas = {};
+  allTransactions.filter(t => t.日期 && t.日期.startsWith(monthStr) && t.狀態 !== 'deleted').forEach(t => {
+    const d = t.日期.slice(8, 10);
+    if (!dayHas[d]) dayHas[d] = { expense: false, income: false };
+    if (t.狀態 === 'income') dayHas[d].income = true;
+    else dayHas[d].expense = true;
+  });
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInPrevMonth = new Date(year, month, 0).getDate();
+  
+  const weekdays = ['日','一','二','三','四','五','六'];
+  
+  let html = weekdays.map(d => `<div class="calendar-weekday">${d}</div>`).join('');
+  
+  // Prev month days
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const d = daysInPrevMonth - i;
+    html += `<div class="calendar-day other-month">${d}</div>`;
+  }
+  
+  // Current month days
+  const today = new Date();
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dayStr = String(d).padStart(2, '0');
+    const has = dayHas[dayStr];
+    const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
+    let cls = 'calendar-day';
+    if (isToday) cls += ' today';
+    if (has && has.expense && has.income) cls += ' has-both';
+    else if (has && has.expense) cls += ' has-expense';
+    else if (has && has.income) cls += ' has-income';
+    
+    html += `<div class="${cls}" onclick="openCalDay('${monthStr}-${dayStr}')">${d}</div>`;
+  }
+  
+  // Next month days
+  const totalCells = firstDay + daysInMonth;
+  const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let d = 1; d <= remaining; d++) {
+    html += `<div class="calendar-day other-month">${d}</div>`;
+  }
+  
+  document.getElementById('calendarGrid').innerHTML = html;
+  
+  // Summary
+  const monthTxs = allTransactions.filter(t => t.日期 && t.日期.startsWith(monthStr) && t.狀態 !== 'deleted');
+  const daysWithTx = new Set(monthTxs.map(t => t.日期)).size;
+  const totalExpense = monthTxs.filter(t => t.狀態 !== 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
+  const totalIncome = monthTxs.filter(t => t.狀態 === 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
+  document.getElementById('calendarSummary').innerHTML =
+    `共 ${daysWithTx} 天有記錄 | 支出 $${totalExpense.toLocaleString()} | 收入 $${totalIncome.toLocaleString()}`;
+}
+
+function openCalDay(dateStr) {
+  const dayTxs = allTransactions.filter(t => t.日期 === dateStr && t.狀態 !== 'deleted');
+  if (dayTxs.length === 0) return;
+  
+  const date = new Date(dateStr + 'T00:00:00');
+  document.getElementById('calDayTitle').textContent = dateLabel(date);
+  
+  let html = '';
+  dayTxs.forEach(t => {
+    const isIncome = t.狀態 === 'income';
+    const merchant = t.商戶 || t.備註 || '未分類';
+    html += `<div class="cal-day-tx">
+      <div class="tx-emoji">${t.類別 || '📋'}</div>
+      <div class="tx-info">
+        <div class="tx-merchant">${esc(merchant)}</div>
+        <div class="tx-category">${esc(t.備註 || '')}</div>
+      </div>
+      <div class="tx-amount ${isIncome ? 'income' : 'expense'}">
+        ${isIncome ? '+' : '-'}$${parseFloat(t.金額 || 0).toLocaleString()}
+      </div>
+    </div>`;
+  });
+  
+  const totalExpense = dayTxs.filter(t => t.狀態 !== 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
+  const totalIncome = dayTxs.filter(t => t.狀態 === 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
+  html += `<div class="cal-day-total expense">支出 $${totalExpense.toLocaleString()}</div>`;
+  if (totalIncome > 0) {
+    html += `<div class="cal-day-total income">收入 $${totalIncome.toLocaleString()}</div>`;
+  }
+  
+  document.getElementById('calDayBody').innerHTML = html;
+  document.getElementById('calDayModal').classList.add('show');
+}
+
+function closeCalDayModal() {
+  document.getElementById('calDayModal').classList.remove('show');
+}
+
+// ============================================================
+// CATEGORIES
+// ============================================================
+let allCategoryItems = [];
+
+function renderCategories(filter = '') {
   const cats = CONFIG.CATEGORIES;
   const monthStr = formatMonth(currentMonth);
+  const q = filter.toLowerCase();
   
-  // Category summary
   const catTotals = {};
-  allTransactions.filter(t => t.日期 && t.日期.startsWith(monthStr) && t.狀態 !== 'deleted' && t.狀態 !== 'income').forEach(t => {
+  allTransactions.filter(t => 
+    t.日期 && t.日期.startsWith(monthStr) && t.狀態 !== 'deleted' && t.狀態 !== 'income'
+  ).forEach(t => {
     const cat = t.類別 || '📋 其他';
     catTotals[cat] = (catTotals[cat] || 0) + parseFloat(t.金額 || 0);
   });
   
-  const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
-  const total = sortedCats.reduce((s, [, v]) => s + v, 0) || 1;
+  const total = Object.values(catTotals).reduce((s, v) => s + v, 0) || 1;
+  
+  const sortedCats = Object.entries(catTotals).sort((a, b) => b[1] - a[1]).filter(([cat]) => {
+    if (!q) return true;
+    const catInfo = cats.find(c => c.類別 === cat) || {};
+    return cat.replace(/^[^\s]+\s/, '').toLowerCase().includes(q) ||
+           (catInfo.Emoji || '').includes(q);
+  });
+  
+  allCategoryItems = sortedCats;
   
   let catHtml = '';
   sortedCats.forEach(([cat, amt]) => {
     const catInfo = cats.find(c => c.類別 === cat) || {};
     const color = catInfo.顏色 || '#ADB5BD';
-    const pct = (amt / total * 100).toFixed(0);
-    catHtml += `<div class="cat-item">
+    const pct = (amt / total * 100).toFixed(1);
+    const catName = cat.replace(/^[^\s]+\s/, '');
+    catHtml += `<div class="cat-item" onclick="onCatClick('${esc(cat)}')">
       <div class="cat-emoji">${catInfo.Emoji || '📋'}</div>
       <div class="cat-info">
-        <div class="cat-name">${cat}</div>
+        <div class="cat-name">${esc(catName)}</div>
         <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:${color}"></div></div>
       </div>
       <div class="cat-amount">$${amt.toLocaleString()}</div>
+      <div class="cat-arrow">▶</div>
     </div>`;
   });
   
@@ -626,8 +800,18 @@ function renderCategories() {
   document.getElementById('categoryList').innerHTML = catHtml;
 }
 
+function filterCategories() {
+  const q = document.getElementById('catSearchInput').value.trim();
+  renderCategories(q);
+}
+
+function onCatClick(cat) {
+  setFilter(cat);
+  showToast(`篩選：${cat.replace(/^[^\s]+\s/, '')}`, 'success');
+}
+
 // ============================================================
-// CHARTS
+// CHARTS (with percentages)
 // ============================================================
 function renderCharts() {
   const monthStr = formatMonth(currentMonth);
@@ -648,23 +832,41 @@ function renderPieChart(txs) {
   const catInfo = {};
   CONFIG.CATEGORIES.forEach(c => catInfo[c.類別] = c);
   
+  const total = cats.reduce((s, c) => s + catTotals[c], 0) || 1;
+  
   const ctx = document.getElementById('pieChart').getContext('2d');
   if (charts.pie) charts.pie.destroy();
   
   charts.pie = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: cats.map(c => catInfo[c] ? catInfo[c].Emoji + ' ' + c.replace(/^[^\s]+\s/, '') : c),
+      labels: cats.map(c => {
+        const pct = ((catTotals[c] / total) * 100).toFixed(1);
+        const name = catInfo[c] ? catInfo[c].Emoji + ' ' + catInfo[c].類別.replace(/^[^\s]+\s/, '') : c.replace(/^[^\s]+\s/, '');
+        return `${name} ${pct}%`;
+      }),
       datasets: [{
         data: cats.map(c => catTotals[c]),
         backgroundColor: cats.map(c => catInfo[c]?.顏色 || '#ADB5BD'),
-        borderWidth: 0
+        borderWidth: 0,
+        hoverOffset: 4
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { color: '#aaaaaa', padding: 12, font: { size: 11 } } } }
+      plugins: {
+        legend: { position: 'bottom', labels: { color: '#aaaaaa', padding: 10, font: { size: 11 }, boxWidth: 12 } },
+        tooltip: {
+          callbacks: {
+            label: function(ctx) {
+              const val = ctx.raw || 0;
+              const pct = ((val / total) * 100).toFixed(1);
+              return ` $${val.toLocaleString()} (${pct}%)`;
+            }
+          }
+        }
+      }
     }
   });
 }
@@ -704,7 +906,7 @@ function renderBarChart(txs) {
 }
 
 // ============================================================
-// TRANSACTION EDIT (view only, no add from this UI)
+// TRANSACTION EDIT
 // ============================================================
 function openEditModal(index) {
   const t = allTransactions[index];
@@ -793,13 +995,20 @@ function closeModal() {
 function switchTab(tab) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.content').forEach(c => c.classList.remove('active'));
-  // tabs: home=1, charts=2, cats=3, settings=4 (removed add)
-  const tabMap = { 'home': 1, 'charts': 2, 'cats': 3, 'settings': 4 };
+  // tabs: home=1, calendar=2, charts=3, cats=4, settings=5
+  const tabMap = { 'home': 1, 'calendar': 2, 'charts': 3, 'cats': 4, 'settings': 5 };
   document.querySelector(`.tab:nth-child(${tabMap[tab]})`).classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
   
   if (tab === 'charts') {
     setTimeout(() => { renderCharts(); }, 100);
+  }
+  if (tab === 'calendar') {
+    renderCalendar();
+  }
+  if (tab === 'cats') {
+    document.getElementById('catSearchInput').value = '';
+    renderCategories();
   }
 }
 
