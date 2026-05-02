@@ -269,10 +269,11 @@
       <input type="number" class="form-input" id="settingBudget" style="width:120px;text-align:right" value="15000" onchange="updateSetting('月份預算', this.value)">
     </div>
     <div class="settings-item-full">
-      <label class="form-label" style="margin-bottom:8px">主帳戶</label>
+      <label class="form-label" style="margin-bottom:8px">主銀行</label>
       <select class="form-select" id="settingAccount" style="width:140px" onchange="updateSetting('主帳戶', this.value)">
-        <option value="SCB CC">SCB 信用咭</option>
-        <option value="BOCHK CC">BOCHK 信用咭</option>
+        <option value="SCB">SCB</option>
+        <option value="BOCHK">BOCHK</option>
+        <option value="HSBC">HSBC</option>
         <option value="Cash">現金</option>
       </select>
     </div>
@@ -335,6 +336,10 @@
         <div class="form-group">
           <label class="form-label">商戶</label>
           <input type="text" class="form-input" id="editTxMerchant">
+        </div>
+        <div class="form-group">
+          <label class="form-label">銀行</label>
+          <input type="text" class="form-input" id="editTxBank" placeholder="例如：SCB、BOCHK、HSBC">
         </div>
         <div class="form-group">
           <label class="form-label">備註</label>
@@ -579,7 +584,7 @@ function renderTransactionList() {
         <div class="tx-emoji">${t.類別 || '📋'}</div>
         <div class="tx-info">
           <div class="tx-merchant">${esc(t.商戶 || t.備註 || '未分類')}</div>
-          <div class="tx-category">${esc(t.備註 || '')}</div>
+          <div class="tx-category">${esc(t.銀行 || '')} · ${esc(t.備註 || '')}</div>
         </div>
         <div class="tx-amount ${isIncome ? 'income' : 'expense'}">
           ${isIncome ? '+' : '-'}$${parseFloat(t.金額 || 0).toLocaleString()}
@@ -714,6 +719,7 @@ function openEditModal(index) {
   document.getElementById('editTxDate').value = t.日期;
   document.getElementById('editTxAmount').value = t.金額;
   document.getElementById('editTxMerchant').value = t.商戶 || '';
+  document.getElementById('editTxBank').value = t.銀行 || '';
   document.getElementById('editTxNote').value = t.備註 || '';
   document.getElementById('editTxType').value = t.狀態 === 'income' ? 'income' : 'expense';
   
@@ -747,6 +753,7 @@ async function saveTransaction(e) {
     類別: cat,
     金額: parseFloat(document.getElementById('editTxAmount').value) || 0,
     商戶: document.getElementById('editTxMerchant').value,
+    銀行: document.getElementById('editTxBank').value,
     備註: document.getElementById('editTxNote').value,
     狀態: document.getElementById('editTxType').value === 'income' ? 'income' : 'confirmed'
   };
@@ -818,9 +825,9 @@ function updateSetting(key, value) {
 }
 
 function exportData() {
-  const csv = '日期,類別,金額,商戶,備註,帳戶,狀態\n' +
+  const csv = '日期,類別,金額,商戶,銀行,備註,狀態\n' +
     allTransactions.filter(t => t.狀態 !== 'deleted').map(t =>
-      `${t.日期},${t.類別},${t.金額},${t.商戶},${t.備註},${t.帳戶},${t.狀態}`
+      `${t.日期},${t.類別},${t.金額},${t.商戶},${t.銀行},${t.備註},${t.狀態}`
     ).join('\n');
   
   const blob = new Blob([csv], { type: 'text/csv' });

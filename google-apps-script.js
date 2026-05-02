@@ -105,7 +105,7 @@ function doPost(e) {
 
 /**
  * 讀取所有交易
- * 返回格式：[{"日期":"2026-04-01","類別":"🍜 餐廳","金額":150,"商戶":"太古廣場","備註":"午餐","帳戶":"SCB CC","圖片URL":"","狀態":"confirmed"}, ...]
+ * 返回格式：[{"日期":"2026-04-01","類別":"🍜 餐廳","金額":150,"商戶":"太古廣場","備註":"午餐","銀行":"SCB","圖片URL":"","狀態":"confirmed"}, ...]
  */
 function readTransactions() {
   const sheet = getSheet('Transactions');
@@ -122,7 +122,7 @@ function readTransactions() {
     '金額': parseFloat(row[2]) || 0,
     '商戶': String(row[3] || ''),
     '備註': String(row[4] || ''),
-    '帳戶': String(row[5] || ''),
+    '銀行': String(row[5] || ''),
     '圖片URL': String(row[6] || ''),
     '狀態': String(row[7] || 'confirmed')
   }));
@@ -212,7 +212,7 @@ function addTransaction(tx) {
     tx.金額,
     tx.商戶,
     tx.備註 || '',
-    tx.帳戶 || '',
+    tx.銀行 || '',
     tx.圖片URL || '',
     tx.狀態 || 'confirmed'
   ]]);
@@ -237,7 +237,7 @@ function updateTransaction(data) {
     data.金額,
     data.商戶,
     data.備註 || '',
-    data.帳戶 || '',
+    data.銀行 || '',
     data.圖片URL || '',
     data.狀態 || 'confirmed'
   ]]);
@@ -324,8 +324,9 @@ function updateMonthlySummary(month) {
 function formatDate(date) {
   if (!date) return '';
   if (typeof date === 'string') return date.substring(0, 10);
+  // Use Hong Kong timezone to avoid off-by-one day errors
   const d = new Date(date);
-  return d.getFullYear() + '-' + 
-    String(d.getMonth() + 1).padStart(2, '0') + '-' + 
-    String(d.getDate()).padStart(2, '0');
+  const tz = Session.getScriptTimeZone();
+  const formatted = Utilities.formatDate(d, tz, 'yyyy-MM-dd');
+  return formatted;
 }
