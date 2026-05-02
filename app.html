@@ -618,7 +618,7 @@ function renderTransactionList() {
     const dayTxs = groups[date];
     const dayExpense = dayTxs.filter(t => t.狀態 !== 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
     const dayIncome = dayTxs.filter(t => t.狀態 === 'income').reduce((s, t) => s + parseFloat(t.金額 || 0), 0);
-    const dayDate = new Date(date + 'T00:00:00');
+    const dayDate = parseDate(date);
     
     html += `<div class="day-group">
       <div class="day-header">
@@ -716,7 +716,7 @@ function openCalDay(dateStr) {
   const dayTxs = allTransactions.filter(t => t.日期 === dateStr && t.狀態 !== 'deleted');
   if (dayTxs.length === 0) return;
   
-  const date = new Date(dateStr + 'T00:00:00');
+  const date = parseDate(dateStr);
   document.getElementById('calDayTitle').textContent = dateLabel(date);
   
   let html = '';
@@ -1052,6 +1052,12 @@ function refreshData() {
 // ============================================================
 // HELPERS
 // ============================================================
+// Parse YYYY-MM-DD string as Hong Kong date (avoids JS Date UTC ambiguity)
+function parseDate(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 function formatMonth(d) {
   return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0');
 }
